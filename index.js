@@ -146,7 +146,42 @@ $(document).ready(function () {
         $(".right.later").css("z-index", "1");
     }, 5000);
 
+    setTimeout(function () {
+        preLoadImage();
+    }, 2000);
 });
+
+function preLoadImage() {
+    // Prevent duplicate execution within the same browsing session
+    if (sessionStorage.getItem('images_prefetched')) {
+        console.log('Images have already been prefetched.');
+        return;
+    }
+
+    // Send HTTP request to the API to fetch the image list
+    fetch('https://akitephile.com/get-images.php')
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('API connection error: ' + response.statusText);
+            }
+            return response.json(); // Parse returned JSON data into a JavaScript array
+        })
+        .then((images) => {
+            if (Array.isArray(images) && images.length > 0) {
+                images.forEach((imageUrl) => {
+                    const img = new Image();
+                    img.src = imageUrl; // Browser automatically downloads in background and saves to Cache
+                });
+
+                // Mark as successfully prefetched for the current browsing session
+                sessionStorage.setItem('images_prefetched', 'true');
+                console.log(`Successfully prefetched ${images.length} images.`);
+            }
+        })
+        .catch((error) => {
+            console.error('Failed to fetch image list:', error);
+        });
+}
 
 function goToBambusstadt() {
     window.location = "./bambusstadt.html";
