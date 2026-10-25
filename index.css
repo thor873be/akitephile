@@ -296,7 +296,7 @@ header .header .menu a {
 }
 
 .right.later {
-    transition: transform 2s ease 2s;
+    transition: transform 2s ease 4s;
 }
 
 .right {

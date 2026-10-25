@@ -141,10 +141,13 @@ $(document).ready(function () {
         $("#cup").addClass("show");
         $("#cup-mobi").addClass("show");
     }, 100);
+    const $carousel = $('#home-carousel');
+    $carousel.carousel('pause');
     setTimeout(function () {
+        $carousel.carousel('cycle');
         $("#cup").addClass("d-none");
         $(".right.later").css("z-index", "1");
-    }, 5000);
+    }, 7000);
 
     setTimeout(function () {
         preLoadImage();
